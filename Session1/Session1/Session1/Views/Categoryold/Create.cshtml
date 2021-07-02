@@ -1,0 +1,35 @@
+﻿
+@{
+    @model Session1.Models.Category
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<h2>Nhập dữ liệu cho category</h2>
+@{ Html.BeginForm("Create");}
+<div class="form-horizontal">
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(Model => Model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(Model => Model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>    
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.image, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(Model => Model.image, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(Model => Model.image, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(Model => Model.description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(Model => Model.description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <button type="submit">Submit</button>
+</div>
+@{ Html.EndForm();}

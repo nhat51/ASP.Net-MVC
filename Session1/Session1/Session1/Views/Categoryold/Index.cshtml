@@ -1,0 +1,73 @@
+﻿
+@{
+    @model Session1.Models.Category
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Admin_layout.cshtml";
+}
+
+<h3>Dùng theo kiểu viewdata</h3>
+<h1>
+    @ViewData["Message"]
+</h1>
+<h2>
+    Thời gian: @ViewData["CurrentTime"]
+</h2>
+<h3>Dùng Theo kiểu viewbag</h3>
+
+<h1>@ViewBag.Message</h1>
+<h2>Thời Gian: @ViewBag.CurrentTime</h2>
+
+<h1>Đây là code c#</h1>
+
+@{
+    //day la noi dung viet code c#
+    var products = new string[] { "Laptop", "PC", "Telephone" };
+
+}
+<ul>
+    @foreach (var product in products)
+    {
+        <li>Product:@product</li>
+    }
+</ul>
+
+<a href="~/Home/About">About Us</a>
+<br />
+@Html.ActionLink("Home", "Index", "Home")
+
+<h2>Start Form</h2>
+@{Html.BeginForm("Create", "Category"); }
+@Html.Label("Email")
+@Html.TextBox("email")
+<br />
+@Html.Label("Password")
+@Html.Password("password")
+<br />
+@Html.DropDownList("City", new SelectList(new[] { "Hà Nội", "Sài Gòn", "Nha Trang", "Huế" }), "Chọn tỉnh/Thành phố")
+<br />
+@Html.CheckBox("Remember")@Html.Label("Remember Me")
+<br />
+@Html.RadioButton("Gender", "Male", true) Nam
+@Html.RadioButton("Gender", "Female") Nữ
+<br />
+<button type="submit">Submit</button>
+@{Html.EndForm();}
+
+<h3>Thông tin danh mục</h3>
+<h3>Tên: @Model.Name</h3>
+<h3>Ảnh: @Model.image</h3>
+<h3>Mô tả: @Model.description</h3>
+
+
+<h2>Nhập dữ liệu cho category</h2>
+@{ Html.BeginForm();}
+
+@Html.ValidationSummary(true)
+@Html.LabelFor(Model => Model.Name)
+@Html.EditorFor(Model => Model.Name)
+@Html.LabelFor(Model => Model.image)
+@Html.EditorFor(Model => Model.image)
+@Html.LabelFor(Model => Model.description)
+@Html.TextAreaFor(Model => Model.description)
+
+@{ Html.EndForm();}

@@ -1,23 +1,56 @@
 ﻿using System;
+
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Session1.Context;
+using Session1.Models;
 
 namespace Session1.Controllers
 {
     public class CategoryController : Controller
     {
+        private DataContext db = new DataContext();
+
         // GET: Category
-        public ActionResult Index()
+        public ActionResult Index(string search,string sortOrder)
         {
-            return View();
+            string sort = !String.IsNullOrEmpty(sortOrder) ? sortOrder : "asc";
+
+            var categories = from c in db.Categories select c;
+            if (!String.IsNullOrEmpty(search))
+            {
+                categories = categories.Where(c => c.Name.Contains(search));
+            }
+            switch (sort)
+            {
+                case "asc":
+                    categories = categories.OrderBy(c => c.Name);
+                    break;
+                case "desc":
+                    categories = categories.OrderByDescending(c => c.Name);
+                    break;
+            }
+            return View(categories);
         }
 
         // GET: Category/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Category category = db.Categories.Find(id);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+            return View(category);
         }
 
         // GET: Category/Create
@@ -27,63 +60,86 @@ namespace Session1.Controllers
         }
 
         // POST: Category/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,image,description")] Category category)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-
+                db.Categories.Add(category);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(category);
         }
 
         // GET: Category/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Category category = db.Categories.Find(id);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+            return View(category);
         }
 
         // POST: Category/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Name,image,description")] Category category)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(category).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(category);
         }
 
         // GET: Category/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Category category = db.Categories.Find(id);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+            return View(category);
         }
 
         // POST: Category/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            Category category = db.Categories.Find(id);
+            db.Categories.Remove(category);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
-                return RedirectToAction("Index");
-            }
-            catch
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                return View();
+                db.Dispose();
             }
+            base.Dispose(disposing);
         }
     }
 }
