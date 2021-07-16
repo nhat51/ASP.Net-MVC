@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Session1.Context;
 using Session1.Models;
+using System.Dynamic;
 
 namespace Session1.Controllers
 {
@@ -40,7 +41,12 @@ namespace Session1.Controllers
             }
 
             //Lọc theo category 
-            return View(products);
+            var categories = db.Categories.ToList();
+            dynamic data = new ExpandoObject();
+            data.Products = products;
+            data.Categories = categories;
+
+            return View(data);
         }
 
         // GET: Product/Details/5
