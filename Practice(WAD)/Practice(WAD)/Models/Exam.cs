@@ -20,6 +20,10 @@ namespace Practice_WAD_.Models
         [Required]
         public string RoomName { get; set; }
         [Required]
+        public string ExamDate { get; set; }
+        [Required]
+        public int Duration { get; set; }
+        [Required]
         public string FacNamee { get; set; }
     }
 }

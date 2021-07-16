@@ -47,7 +47,7 @@ namespace Practice_WAD_.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Subject,StartTime,Status,RoomName,FacNamee")] Exam exam)
+        public ActionResult Create([Bind(Include = "Id,Subject,StartTime,Status,RoomName,ExamDate,Duration,FacNamee")] Exam exam)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace Practice_WAD_.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Subject,StartTime,Status,RoomName,FacNamee")] Exam exam)
+        public ActionResult Edit([Bind(Include = "Id,Subject,StartTime,Status,RoomName,ExamDate,Duration,FacNamee")] Exam exam)
         {
             if (ModelState.IsValid)
             {
